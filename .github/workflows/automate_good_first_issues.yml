@@ -19,7 +19,7 @@ jobs:
       - name: Move issue between columns
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.MY_PERSONAL_ACCESS_TOKEN }}
           script: |
             const CONFIG = {
               projectName: "Good First Issues",
