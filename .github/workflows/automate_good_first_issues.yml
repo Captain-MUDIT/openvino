@@ -22,7 +22,7 @@ jobs:
           github-token: ${{ secrets.MY_PERSONAL_ACCESS_TOKEN }}
           script: |
             const CONFIG = {
-              projectName: "Good First Issues",
+              projectId: 1,  // Use the project ID directly here
               targetLabel: "good first issue",
               columns: {
                 contributors: "Contributors needed",
@@ -46,11 +46,12 @@ jobs:
               );
             }
 
+            // Get the project using the project ID directly
             async function getProject() {
               try {
-                const { data: projects } = await github.rest.projects.listForRepo({ owner, repo });
-                const project = projects.find(p => p.name === CONFIG.projectName);
-                if (!project) throw new Error(`Project "${CONFIG.projectName}" not found`);
+                const { data: project } = await github.rest.projects.get({
+                  project_id: CONFIG.projectId  // Use project ID directly
+                });
                 return project;
               } catch (error) {
                 console.error(`Failed to get project: ${error.message}`);
@@ -61,7 +62,7 @@ jobs:
             async function getColumnId(project, columnName) {
               try {
                 const { data: columns } = await github.rest.projects.listColumns({ project_id: project.id });
-                console.log('Available Projects:', projects);  // Add this line for debugging
+                console.log('Available Columns:', columns);  // For debugging
                 const column = columns.find(c => c.name === columnName);
                 if (!column) throw new Error(`Column "${columnName}" not found`);
                 return column.id;
