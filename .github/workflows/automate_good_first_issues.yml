@@ -61,6 +61,7 @@ jobs:
             async function getColumnId(project, columnName) {
               try {
                 const { data: columns } = await github.rest.projects.listColumns({ project_id: project.id });
+                console.log('Available Projects:', projects);  // Add this line for debugging
                 const column = columns.find(c => c.name === columnName);
                 if (!column) throw new Error(`Column "${columnName}" not found`);
                 return column.id;
